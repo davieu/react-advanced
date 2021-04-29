@@ -26,7 +26,12 @@ const MultipleReturns = () => {
   }, []);
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return (
+      <React.Fragment>
+        <h2>Loading...</h2>
+        <div className='loader'></div>
+      </React.Fragment>
+    );
   }
 
   if (isError) {
