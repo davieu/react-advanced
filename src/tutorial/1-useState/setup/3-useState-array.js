@@ -19,9 +19,26 @@ const UseStateArray = () => {
     setPeople(changedToLord);
   };
 
+  const changePersonFunctionalApproach = (id) => {
+    setPeople((currPeopleValue) => {
+      let newPeopleValue = currPeopleValue.map((person) => {
+        if (person.id == id) {
+          if (person.name.includes('Lord')) {
+            return person;
+          } else {
+            person.name = `Lord ${person.name}`;
+          }
+        }
+
+        return person;
+      });
+      return newPeopleValue;
+    });
+  };
+
   const resetNames = () => {
     let peopleCopy = [...people];
-    let resetNames = peopleCopy.map((person, index) => {
+    let resetNames = peopleCopy.map((person) => {
       switch (person.id) {
         case 1:
           person.name = 'john';
@@ -36,10 +53,32 @@ const UseStateArray = () => {
           person.name = 'anna';
           break;
       }
-      console.log(index);
       return person;
     });
     setPeople(resetNames);
+  };
+
+  const resetNamesFunctional = () => {
+    setPeople((currPeopleValue) => {
+      let newPeopleValue = currPeopleValue.map((person) => {
+        switch (person.id) {
+          case 1:
+            person.name = 'john';
+            break;
+          case 2:
+            person.name = 'peter';
+            break;
+          case 3:
+            person.name = 'susan';
+            break;
+          case 4:
+            person.name = 'anna';
+            break;
+        }
+        return person;
+      });
+      return newPeopleValue;
+    });
   };
 
   const removeItem = (id) => {
@@ -48,6 +87,16 @@ const UseStateArray = () => {
       return person.id !== id;
     });
     setPeople(newPeople);
+  };
+
+  //Functional Approach to the remove item
+  const removeItemFunctionalApproach = (id) => {
+    setPeople((currentPeopleValue) => {
+      let newPeople = currentPeopleValue.filter((person) => {
+        return person.id !== id;
+      });
+      return newPeople;
+    });
   };
 
   return (
@@ -63,6 +112,21 @@ const UseStateArray = () => {
               Remove Item
             </button>
             <br />
+            <button
+              className='btn'
+              onClick={() => changePersonFunctionalApproach(id)}
+            >
+              Functional: {name}
+            </button>
+            <button
+              className='btn'
+              onClick={() => removeItemFunctionalApproach(id)}
+            >
+              Functional Approach Remove
+            </button>
+            <br />
+            <br />
+            <hr />
           </React.Fragment>
         );
       })}
@@ -71,10 +135,14 @@ const UseStateArray = () => {
         Clear Items
       </button>
       <button className='btn' onClick={resetNames}>
-        Change Items
+        Original Items
       </button>
       <button className='btn' onClick={() => setPeople(data)}>
         Populate
+      </button>
+      <br />
+      <button className='btn' onClick={resetNamesFunctional}>
+        Functional Original Items
       </button>
     </React.Fragment>
   );
