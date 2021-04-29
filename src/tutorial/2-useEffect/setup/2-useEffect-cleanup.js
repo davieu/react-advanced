@@ -11,6 +11,8 @@ const UseEffectCleanup = () => {
   };
 
   useEffect(() => {
+    // eventListener that looks for window resizing. Then it executes checkSize callback on resize.
+    // checkSize sets the useState data to the width of the new inner width of the window size
     window.addEventListener('resize', checkSize);
     // cleanup function
     return () => {
