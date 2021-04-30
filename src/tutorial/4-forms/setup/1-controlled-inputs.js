@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import RenderInputTest from './myTest';
 // JS
 // const input = document.getElementById('myText');
 // const inputValue = input.value
@@ -9,8 +8,13 @@ import RenderInputTest from './myTest';
 const ControlledInputs = () => {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
-  const [people, setPeople] = useState([]);
+  const [people, setPeople] = useState([
+    { email: 'yuyyu', firstName: 'tt', id: '16197572484' },
+  ]);
   const [editMode, setEditMode] = useState(false);
+  const [currPersonID, setCurrPersonID] = useState('');
+  // const [tempName, setTempName] = useState('');
+  // const [tempEmail, setTempEmail] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,27 +29,68 @@ const ControlledInputs = () => {
       //   return [...currPeople, person];
       // });
       setPeople([...people, person]);
-      console.log(person);
+      // console.log(person);
       setFirstName('');
       setEmail('');
-    } else {
-      console.log('empty values');
     }
+    // else {
+    // console.log('empty values');
+    // }
     // console.log(firstName, email);
   };
 
-  const handleSubmitEdit = (currTempName, currID) => {
+  const handleSubmitEdit = (currTempName, currTempEmail, currID) => {
+    console.log('name: ' + currTempName);
+    console.log('email:' + currTempEmail);
+    console.log('id: ' + currID);
+    // let peopleCopy = [...people];
+    // let resetNames = peopleCopy.map((person) => {
+    //   if (person.id === currID) {
+    //     if (currTempName != '') {
+    //       person.firstName = currTempName;
+    //     }
+    //     if (currTempEmail != '') {
+    //       person.email = currTempEmail;
+    //     }
+    //     person.id = currID;
+
+    //     // if (email != currTempEmail) {
+    //     //   email = currTempName;
+    //     // }
+    //     return person;
+    //     // console.log(person.id, person.firstName, currTempName);
+    //   } else {
+    //     return person;
+    //   }
+    // });
+    // setPeople(resetNames);
+
     setPeople((currPeople) => {
       let updatedPeople = currPeople.map((person) => {
         if (person.id === currID) {
-          person.firstName = currTempName;
+          if (currTempName != '') {
+            person.firstName = currTempName;
+          }
+          if (currTempEmail != '') {
+            person.email = currTempEmail;
+          }
+          person.id = currID;
+
+          // if (email != currTempEmail) {
+          //   email = currTempName;
+          // }
           return person;
           // console.log(person.id, person.firstName, currTempName);
+        } else {
+          return person;
         }
       });
+      console.log('ok');
       return updatedPeople;
     });
     setEditMode(false);
+    // setCurrPersonID('');
+    console.log('ok22');
   };
 
   // same as the onchange for the setFirstNAme but I made it as a named function
@@ -63,63 +108,79 @@ const ControlledInputs = () => {
   };
 
   const editPerson = (id) => {
+    setCurrPersonID(id);
     setEditMode(!editMode);
-    console.log(id);
+    console.log('ediebtnID :', id);
   };
 
+  // renders the people list/people state
   const PeopleList = () => {
     const [tempName, setTempName] = useState('');
+    const [tempEmail, setTempEmail] = useState('');
+
     let peopleList = people.map((person) => {
-      const { id, firstName, email } = person;
-      // setEditValue(tempName);
       return (
-        <React.Fragment key={id}>
+        <form key={person.id} id={person.id}>
           <div className='item'>
-            {editMode ? (
-              <input
-                type='text'
-                style={{ width: '4rem' }}
-                id='yoyo'
-                name='yoyo'
-                defaultValue={firstName}
-                onChange={(e) => {
-                  setTempName(e.target.value);
-                }}
-              />
+            {editMode && person.id == currPersonID ? (
+              <React.Fragment>
+                <input
+                  type='text'
+                  style={{ width: '4rem' }}
+                  id='editFirstName'
+                  name='editFirstName'
+                  defaultValue={person.firstName}
+                  onChange={(e) => {
+                    setTempName(e.target.value);
+                  }}
+                />
+                <input
+                  type='text'
+                  style={{ width: '4rem' }}
+                  id='editEmail'
+                  name='editEmail'
+                  defaultValue={person.email}
+                  onChange={(e) => {
+                    setTempEmail(e.target.value);
+                  }}
+                />
+                <button
+                  type='submit'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log('sdsdsd');
+                    handleSubmitEdit(tempName, tempEmail, person.id);
+                    setCurrPersonID('');
+                    console.log('yoyo');
+                  }}
+                >
+                  Submit
+                </button>
+              </React.Fragment>
             ) : (
-              <h4>{firstName}</h4>
+              <React.Fragment>
+                <h4>{person.firstName}</h4>
+                <p>{person.email}</p>
+              </React.Fragment>
             )}
-            {/* // )} */}
-            <p>{email}</p>
             <button
               className='btn'
+              type='button'
               style={{ marginTop: '0px', backgroundColor: 'grey' }}
-              onClick={() => delPerson(id)}
+              onClick={() => delPerson(person.id)}
             >
               Del
             </button>
             <button
               className='btn'
+              type='button'
               style={{ marginTop: '0px', backgroundColor: 'grey' }}
-              onClick={() => editPerson(id)}
+              onClick={(e) => editPerson(person.id)}
             >
-              Edit
+              {editMode && person.id == currPersonID ? 'Toggle' : 'Edit'}
             </button>
-            {editMode ? (
-              <button
-                type='submit'
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleSubmitEdit(tempName, id);
-                }}
-              >
-                Submit
-              </button>
-            ) : (
-              ''
-            )}
           </div>
-        </React.Fragment>
+        </form>
       );
     });
     return peopleList;
@@ -157,9 +218,78 @@ const ControlledInputs = () => {
             add person
           </button>
         </form>
-        <form id='sdsdsd'>
-          <PeopleList />
-        </form>
+
+        {/* <form> */}
+        <PeopleList />
+        {/* {people.map((person) => {
+          // const { id, firstName, email } = person;
+          // setEditValue(tempName);
+          return (
+            <form key={person.id} id={person.id}>
+              <div className='item'>
+                {editMode && person.id == currPersonID ? (
+                  <div>
+                    <input
+                      type='text'
+                      style={{ width: '4rem' }}
+                      id='editFirstName'
+                      name='editFirstName'
+                      defaultValue={person.firstName}
+                      onChange={(e) => {
+                        setTempName(e.target.value);
+                      }}
+                    />
+                    <input
+                      type='text'
+                      style={{ width: '4rem' }}
+                      id='editEmail'
+                      name='editEmail'
+                      defaultValue={person.email}
+                      onChange={(e) => {
+                        setTempEmail(e.target.value);
+                      }}
+                    />
+                    <button
+                      type='submit'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        console.log('sdsdsd');
+                        handleSubmitEdit(tempName, tempEmail, person.id);
+                        setCurrPersonID('');
+                        console.log('yoyo');
+                      }}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <h4>{person.firstName}</h4>
+                    <p>{person.email}</p>
+                  </div>
+                )}
+
+                <button
+                  className='btn'
+                  type='button'
+                  style={{ marginTop: '0px', backgroundColor: 'grey' }}
+                  onClick={() => delPerson(person.id)}
+                >
+                  Del
+                </button>
+                <button
+                  className='btn'
+                  type='button'
+                  style={{ marginTop: '0px', backgroundColor: 'grey' }}
+                  onClick={(e) => editPerson(person.id)}
+                >
+                  Edit
+                </button>
+              </div>
+            </form>
+          );
+        })} */}
+        {/* </form> */}
         {/* Inline render of people */}
         {/* {people.map((person) => {
           const { id, firstName, email } = person;
