@@ -53,15 +53,9 @@ const ControlledInputs = () => {
     //       person.email = currTempEmail;
     //     }
     //     person.id = currID;
-
-    //     // if (email != currTempEmail) {
-    //     //   email = currTempName;
-    //     // }
-    //     return person;
     //     // console.log(person.id, person.firstName, currTempName);
-    //   } else {
-    //     return person;
     //   }
+    //     return person;
     // });
     // setPeople(resetNames);
 
@@ -79,11 +73,12 @@ const ControlledInputs = () => {
           // if (email != currTempEmail) {
           //   email = currTempName;
           // }
-          return person;
+          // return person;
           // console.log(person.id, person.firstName, currTempName);
-        } else {
-          return person;
         }
+        // else {
+        return person;
+        // }
       });
       console.log('ok');
       return updatedPeople;
