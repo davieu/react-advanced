@@ -1,5 +1,9 @@
 ## Corresponding Projects
 
+To start git clone file
+npm init
+npm run start
+
 #### useState
 
 1. Birthday Reminder
