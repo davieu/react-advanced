@@ -10,6 +10,8 @@ const PropDrilling = () => {
     <section>
       <h2>prop drilling use</h2>
       <List people={people} />
+      <List people={people} />
+      <List people={people} />
     </section>
   );
 };
