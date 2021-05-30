@@ -11,6 +11,12 @@ const PropDrilling = () => {
       <h2>prop drilling use</h2>
       <List people={people} />
       <List people={people} />
+      <h2>prop drilling use</h2>
+      <List people={people} />
+      <List people={people} />
+      <h2>prop drilling use</h2>
+      <List people={people} />
+      <List people={people} />
       <List people={people} />
     </section>
   );
