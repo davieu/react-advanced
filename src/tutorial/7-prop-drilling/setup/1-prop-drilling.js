@@ -10,15 +10,25 @@ const PropDrilling = () => {
     <section>
       <h2>prop drilling use</h2>
       <List people={people} />
-      <List people={people} />
-      <h2>prop drilling use</h2>
-      <List people={people} />
-      <List people={people} />
-      <h2>prop drilling use</h2>
-      <List people={people} />
-      <List people={people} />
-      <List people={people} />
     </section>
+  );
+};
+
+const List = ({ people }) => {
+  return (
+    <React.Fragment>
+      {people.map((person) => {
+        return <SinglePerson key={person.id} />;
+      })}
+    </React.Fragment>
+  );
+};
+
+const SinglePerson = ({ id, name }) => {
+  return (
+    <div className='item'>
+      <h4>single item</h4>
+    </div>
   );
 };
 
