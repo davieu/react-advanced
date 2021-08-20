@@ -1,3 +1,5 @@
+npx create-react-app <NAME>
+
 ## Corresponding Projects
 
 To start git clone file
